@@ -76,7 +76,7 @@ class Particle {
             this.goal = checkpoints[this.index];
             const d = pldistance(this.goal.a, this.goal.b, this.pos.x, this.pos.y); 
             if (d < 5) {
-                if (this.index == checkpoints.length-1) {
+                if (audioCB.checked() && this.index == checkpoints.length-1) {
                     ding.play();
                 }
                 this.index = (this.index + 1 ) % checkpoints.length;

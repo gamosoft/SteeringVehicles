@@ -5,7 +5,7 @@ let ray;
 let particle;
 let start, end;
 
-let generationCount = 0;
+let generationCount = 1;
 let TOTAL = 100; // Total population
 const MUTATION_RATE = 0.1;
 const LIFESPAN = 50;
@@ -20,6 +20,7 @@ let widthSlider;
 let regenerateCB;
 let showRaysCB;
 let showGoalsCB;
+let audioCB;
 
 let inside = [];
 let outside = [];
@@ -74,7 +75,7 @@ function buildTrack() {
 }
 
 function changeTrack() {
-    generationCount = 0;
+    generationCount = 1;
     buildTrack();
     for (let i = 0; i < TOTAL; i++) {
         population[i] = new Particle();        
@@ -88,11 +89,16 @@ function setup() {
     showRaysCB = createCheckbox('Show rays:', false);
     showGoalsCB = createCheckbox('Show goals:', false);
     regenerateCB = createCheckbox('Reset track:', false);
+    audioCB = createCheckbox('Goal audio:', false);
     regenerateCB.changed(changeTrack);
 
+    createSpan('Speed:');
     speedSlider = createSlider(1, 10, 1);
+    createSpan('Checkpoints:');
     checkpointsSlider = createSlider(20, 200, 30);
+    createSpan('Noise:');
     noiseSlider = createSlider(2, 50, 2);
+    createSpan('Width:');
     widthSlider = createSlider(10, 100, 30);
 
     checkpointsSlider.changed(changeTrack);
@@ -167,8 +173,12 @@ function draw() {
     bestP.highlight();
 
     fill(255);
-    textSize(24);
+    textSize(16);
     noStroke();
-    text('Steering vehicles', 30, 50);
-    text('Generation: ' + generationCount, 30, 90);
+    text('Steering vehicles', 10, 20);
+    text('Generation: ' + generationCount + ' {Population: '+ population.length + '}', 10, 40);
+    text('Speed: ' + speedSlider.value(), 10, 60);
+    text('Checkpoints: ' + checkpointsSlider.value(), 10, 80);
+    text('Noise: ' + noiseSlider.value(), 10, 100);
+    text('Track width: ' + widthSlider.value(), 10, 120);
 }
