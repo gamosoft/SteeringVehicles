@@ -16,6 +16,7 @@ let speedSlider;
 let checkpointsSlider;
 let noiseSlider;
 let widthSlider;
+let regenerateCB;
 
 let inside = [];
 let outside = [];
@@ -75,6 +76,9 @@ function setup() {
     createCanvas(900, 900);
     tf.setBackend('cpu'); // Calculations in the CPU
 
+    regenerateCB = createCheckbox('Reset track:', false);
+    regenerateCB.changed(changeTrack);
+
     speedSlider = createSlider(1, 10, 1);
     checkpointsSlider = createSlider(20, 200, 30);
     noiseSlider = createSlider(2, 50, 2);
@@ -123,7 +127,9 @@ function draw() {
         }
 
         if (population.length == 0) {
-            buildTrack();
+            if (regenerateCB.checked()) {
+                buildTrack();
+            }
             nextGeneration();
         }
     }
