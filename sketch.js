@@ -13,6 +13,9 @@ let population = [];
 let savedParticles = [];
 
 let speedSlider;
+let checkpointsSlider;
+let noiseSlider;
+let widthSlider;
 
 let inside = [];
 let outside = [];
@@ -24,9 +27,12 @@ function buildTrack() {
     outside = [];
     walls = [];
     // Track generation
-    let noiseMax = 2;
-    const total = 100; // # checkpoints, higher = smoother track
-    const pathWidth = 30;
+    // let noiseMax = 25;
+    // const total = 100; // # checkpoints, higher = smoother track
+    // const pathWidth = 30;
+    let noiseMax = noiseSlider.value();
+    const total = checkpointsSlider.value();
+    const pathWidth = widthSlider.value();
     let startX = random(1000);
     let startY = random(1000);
     for (let i = 0; i < total; i++) {
@@ -58,9 +64,25 @@ function buildTrack() {
 
 }
 
+function changeTrack() {
+    buildTrack();
+    for (let i = 0; i < TOTAL; i++) {
+        population[i] = new Particle();        
+    }
+}
+
 function setup() {
     createCanvas(900, 900);
     tf.setBackend('cpu'); // Calculations in the CPU
+
+    speedSlider = createSlider(1, 10, 1);
+    checkpointsSlider = createSlider(20, 200, 30);
+    noiseSlider = createSlider(2, 50, 2);
+    widthSlider = createSlider(10, 100, 30);
+
+    checkpointsSlider.changed(changeTrack);
+    noiseSlider.changed(changeTrack);
+    widthSlider.changed(changeTrack);
 
     buildTrack();
     // let a = inside[inside.length-1];
@@ -70,8 +92,6 @@ function setup() {
     for (let i = 0; i < TOTAL; i++) {
         population[i] = new Particle();        
     }
-
-    speedSlider = createSlider(1, 10, 1);
 }
 
 
@@ -127,5 +147,11 @@ function draw() {
     }
 
     bestP.highlight();
+
+    fill(255);
+    textSize(24);
+    noStroke();
+    text('Steering vehicles', 30, 50);
+  
 
 }
