@@ -5,7 +5,8 @@ let ray;
 let particle;
 let start, end;
 
-const TOTAL = 100; // Total population
+let generationCount = 0;
+let TOTAL = 100; // Total population
 const MUTATION_RATE = 0.1;
 const LIFESPAN = 50;
 const SIGHT = 50;
@@ -17,10 +18,17 @@ let checkpointsSlider;
 let noiseSlider;
 let widthSlider;
 let regenerateCB;
+let showRaysCB;
+let showGoalsCB;
 
 let inside = [];
 let outside = [];
 let checkpoints = [];
+
+var ding;
+function preload() {
+    ding = loadSound('ding2.wav');
+}
 
 function buildTrack() {
     checkpoints = [];
@@ -66,6 +74,7 @@ function buildTrack() {
 }
 
 function changeTrack() {
+    generationCount = 0;
     buildTrack();
     for (let i = 0; i < TOTAL; i++) {
         population[i] = new Particle();        
@@ -76,6 +85,8 @@ function setup() {
     createCanvas(900, 900);
     tf.setBackend('cpu'); // Calculations in the CPU
 
+    showRaysCB = createCheckbox('Show rays:', false);
+    showGoalsCB = createCheckbox('Show goals:', false);
     regenerateCB = createCheckbox('Reset track:', false);
     regenerateCB.changed(changeTrack);
 
@@ -131,6 +142,7 @@ function draw() {
                 buildTrack();
             }
             nextGeneration();
+            generationCount++;
         }
     }
 
@@ -158,6 +170,5 @@ function draw() {
     textSize(24);
     noStroke();
     text('Steering vehicles', 30, 50);
-  
-
+    text('Generation: ' + generationCount, 30, 90);
 }

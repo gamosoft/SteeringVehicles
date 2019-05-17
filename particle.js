@@ -76,6 +76,9 @@ class Particle {
             this.goal = checkpoints[this.index];
             const d = pldistance(this.goal.a, this.goal.b, this.pos.x, this.pos.y); 
             if (d < 5) {
+                if (this.index == checkpoints.length-1) {
+                    ding.play();
+                }
                 this.index = (this.index + 1 ) % checkpoints.length;
                 this.counter = 0; // Extend life
                 // if (this.index == checkpoints.length - 1) {
@@ -141,10 +144,10 @@ class Particle {
 
             inputs[i] = map(record, 0, 50, 1, 0);
 
-            if (closest) {
+            if (closest && showRaysCB.checked()) {
                 // rays of "vision"
-                // stroke(255);
-                // line(this.pos.x, this.pos.y, closest.x, closest.y);
+                stroke(255, 200);
+                line(this.pos.x, this.pos.y, closest.x, closest.y);
             }
         }
         // const vel = this.vel.copy(); // Adding velocity to the neural network
@@ -182,7 +185,7 @@ class Particle {
         for (let ray of this.rays) {
             // ray.show();
         }
-        if (this.goal) {
+        if (this.goal && showGoalsCB.checked()) {
             this.goal.show();
         }
     }
@@ -198,9 +201,9 @@ class Particle {
         rect(0, 0, 20, 10);
         pop();
         for (let ray of this.rays) {
-          ray.show();
+          // ray.show();
         }
-        if (this.goal) {
+        if (this.goal && showGoalsCB.checked()) {
           this.goal.show();
         }
       }
